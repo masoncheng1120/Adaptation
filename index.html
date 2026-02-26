@@ -35,7 +35,7 @@
             border-color: #a855f7;
         }
         
-        /* Print Styles to exactly match the screen layout */
+        /* Print Styles to exactly match the screen layout but scaled down */
         @media print {
             /* Force the browser to render all background colors, gradients, and images */
             * {
@@ -49,29 +49,58 @@
                 display: none !important; 
             }
             
-            /* Prevent large sections from splitting awkwardly across multiple pages */
-            section, header {
-                break-inside: avoid;
-                page-break-inside: avoid;
+            /* Set standard page margins to maximize space */
+            @page {
+                size: A4 portrait;
+                margin: 1cm;
             }
 
-            /* Prevent grid blocks from breaking inside */
-            .grid > div {
-                break-inside: avoid;
-                page-break-inside: avoid;
-            }
-
-            /* Reset body padding for standard page fitting */
             body {
                 padding: 0 !important;
-                background-color: #f8fafc !important; /* bg-slate-50 */
+                background-color: white !important;
+                font-size: 12px !important; /* Scale down text overall */
             }
 
-            /* Set standard page margins */
-            @page {
-                size: auto;
-                margin: 1.5cm;
+            /* Allow sections to flow naturally but reduce their padding/margins to save space */
+            section {
+                break-inside: auto !important; 
+                page-break-inside: auto !important;
+                padding: 1.5rem !important; 
+                margin-top: 1rem !important;
+                border-bottom-width: 4px !important; 
+                border-radius: 1.5rem !important;
             }
+
+            /* Prevent specific internal cards from breaking in half */
+            .print-card, header, .id-block {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            /* Shrink massive paddings and gaps for print */
+            .p-8, .p-10, .p-12, .md\:p-12 { padding: 1.5rem !important; }
+            .p-6 { padding: 1rem !important; }
+            .gap-8, .gap-10 { gap: 1rem !important; }
+            .mb-10, .mb-12 { margin-bottom: 1.5rem !important; }
+            .mt-12 { margin-top: 1.5rem !important; }
+            .mt-8 { margin-top: 1rem !important; }
+
+            /* Shrink text inputs and boxes so they don't stretch the page */
+            textarea { min-height: 80px !important; font-size: 12px !important; }
+            input, select { font-size: 12px !important; padding: 0.5rem !important; }
+            
+            /* Shrink headers */
+            h1 { font-size: 24px !important; }
+            h2 { font-size: 20px !important; }
+            h3 { font-size: 16px !important; }
+            h4 { font-size: 14px !important; }
+
+            /* Clean up the inline script text */
+            .text-xl.leading-\[3\.5rem\] {
+                font-size: 14px !important;
+                line-height: 2.5rem !important;
+            }
+            .inline-input { font-size: 12px !important; padding: 0 0.5rem !important; min-width: 100px !important; }
         }
         
         /* Utility for AI loading spinner */
@@ -89,7 +118,7 @@
     <div class="max-w-5xl mx-auto space-y-8">
         
         <!-- IDENTIFICATION BLOCK -->
-        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="id-block bg-white rounded-3xl p-6 shadow-sm border border-slate-200 grid grid-cols-1 md:grid-cols-4 gap-6">
             <div class="md:col-span-2">
                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 mb-1">
                     <i data-lucide="user" class="w-4 h-4 text-indigo-500"></i> Student Name
@@ -155,7 +184,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <div class="print-card grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                 <div class="space-y-3">
                     <label class="text-xs font-black text-slate-400 ml-2 uppercase tracking-widest">Base Organism</label>
                     <select id="baseSpecies" class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-slate-100 font-bold text-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50 focus:bg-white outline-none transition-all cursor-pointer appearance-none">
@@ -173,7 +202,7 @@
                 </div>
             </div>
 
-            <div class="bg-orange-50 rounded-3xl p-8 border-2 border-orange-100 relative overflow-hidden">
+            <div class="print-card bg-orange-50 rounded-3xl p-8 border-2 border-orange-100 relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-4 opacity-10">
                     <i data-lucide="alert-triangle" class="w-20 h-20 text-orange-900"></i>
                 </div>
@@ -211,7 +240,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <!-- MUTATION 1 BLOCK -->
-                <div class="flex flex-col gap-4">
+                <div class="print-card flex flex-col gap-4">
                     <div class="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 transition-all hover:border-indigo-300 flex-1">
                         <h4 class="font-black text-indigo-900 mb-4 flex items-center gap-2 uppercase tracking-tighter">
                             <span class="w-6 h-6 bg-indigo-600 text-white rounded-full flex items-center justify-center text-[10px]">1</span>
@@ -231,7 +260,7 @@
                 </div>
 
                 <!-- MUTATION 2 BLOCK -->
-                <div class="flex flex-col gap-4">
+                <div class="print-card flex flex-col gap-4">
                     <div class="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 transition-all hover:border-indigo-300 flex-1">
                         <h4 class="font-black text-indigo-900 mb-4 flex items-center gap-2 uppercase tracking-tighter">
                             <span class="w-6 h-6 bg-indigo-600 text-white rounded-full flex items-center justify-center text-[10px]">2</span>
@@ -257,7 +286,7 @@
                     <span id="aiReviewText">GET CRITICAL REVIEW</span>
                 </button>
 
-                <div class="w-full bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-2xl">
+                <div class="print-card w-full bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-2xl">
                     <h3 class="text-2xl font-black mb-8 flex items-center gap-3">
                         <i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-400"></i> REFINED BLUEPRINTS
                     </h3>
@@ -302,7 +331,7 @@
                 </div>
             </div>
 
-            <div class="bg-purple-50 rounded-[3rem] p-8 md:p-12 border-4 border-purple-100 relative">
+            <div class="print-card bg-purple-50 rounded-[3rem] p-8 md:p-12 border-4 border-purple-100 relative">
                 <div class="absolute -top-6 left-12 bg-purple-500 text-white px-6 py-2 rounded-full font-black text-sm uppercase flex items-center gap-2">
                     <i data-lucide="graduation-cap" class="w-5 h-5"></i> Lab Script
                 </div>
@@ -331,7 +360,7 @@
                     </span>!"
                 </div>
 
-                <div class="mt-12 bg-white rounded-3xl p-8 border-2 border-purple-100">
+                <div class="print-card mt-12 bg-white rounded-3xl p-8 border-2 border-purple-100">
                     <h4 class="font-black text-purple-900 mb-1 flex items-center gap-2">
                         <i data-lucide="trophy" class="w-6 h-6 text-yellow-500"></i> Lab Observations
                     </h4>
